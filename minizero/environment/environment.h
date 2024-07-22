@@ -52,18 +52,23 @@ typedef minizero::env::puzzle2048::Puzzle2048EnvLoader EnvironmentLoader;
 typedef minizero::env::rubiks::RubiksAction Action;
 typedef minizero::env::rubiks::RubiksEnv Environment;
 typedef minizero::env::rubiks::RubiksEnvLoader EnvironmentLoader;
-#else
+#elif TICIACTOE
 #include "tictactoe.h"
 typedef minizero::env::tictactoe::TicTacToeAction Action;
 typedef minizero::env::tictactoe::TicTacToeEnv Environment;
 typedef minizero::env::tictactoe::TicTacToeEnvLoader EnvironmentLoader;
+#else
+#include "atarigo.h"
+typedef minizero::env::atarigo::AtariGoAction Action;
+typedef minizero::env::atarigo::AtariGoEnv Environment;
+typedef minizero::env::atarigo::AtariGoEnvLoader EnvironmentLoader;
 #endif
 
 namespace minizero::env {
 
 inline void setUpEnv()
 {
-#if GO
+#if GO || ATARIGO
     go::initialize();
 #endif
 
@@ -106,6 +111,8 @@ inline void setUpEnv()
     config::env_board_size = 4;
 #elif RUBIKS
     config::env_board_size = 3;
+#elif ATARIGO
+    config::env_board_size = 7;
 #endif
 }
 

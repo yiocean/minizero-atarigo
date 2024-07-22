@@ -160,7 +160,7 @@ void setConfiguration(ConfigureLoader& cl)
                                                       "#\troad_runner robotank seaquest skiing solaris space_invaders star_gunner surround tennis time_pilot\n"
                                                       "#\ttutankham up_n_down venture video_pinball wizard_of_wor yars_revenge zaxxon",
                     "Environment");
-#elif GO
+#elif GO || ATARIGO
     cl.addParameter("env_go_komi", env_go_komi, "the komi in Go", "Environment");
     cl.addParameter("env_go_ko_rule", env_go_ko_rule, "the ko rules in Go: positional (only consider stones), situational (consider stones and the turn)", "Environment");
 #elif HEX
