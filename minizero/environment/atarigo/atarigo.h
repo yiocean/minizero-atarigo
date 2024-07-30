@@ -42,7 +42,7 @@ public:
 
     float getEvalScore(bool is_resign = false) const override
     {
-        if (!isEatStone()) { return 0.0f; }
+        if (!isEatStone() && !is_resign) { return 0.0f; }
 
         if (turn_ == Player::kPlayer1)
             return -1.0f; // white win
