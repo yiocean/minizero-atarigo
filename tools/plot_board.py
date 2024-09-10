@@ -12,7 +12,7 @@ class PlotBoard:
 
         plt.rc('font', family='monospace')
 
-        if game == 'go' or game == 'gomoku' or game == 'killallgo' or game == 'nogo' or game == 'atarigo':
+        if  game == 'atarigo' or game == 'go' or game == 'gomoku' or game == 'killallgo' or game == 'nogo':
             PlotBoard.plot_go_board(boardsize, blackboard, whiteboard, cardinality, addtext)
         elif game == 'othello':
             PlotBoard.plot_othello_board(boardsize, blackboard, whiteboard, cardinality, addtext)

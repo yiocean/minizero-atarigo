@@ -7,6 +7,11 @@
 typedef minizero::env::atari::AtariAction Action;
 typedef minizero::env::atari::AtariEnv Environment;
 typedef minizero::env::atari::AtariEnvLoader EnvironmentLoader;
+#elif ATARIGO
+#include "atarigo.h"
+typedef minizero::env::atarigo::AtariGoAction Action;
+typedef minizero::env::atarigo::AtariGoEnv Environment;
+typedef minizero::env::atarigo::AtariGoEnvLoader EnvironmentLoader;
 #elif CONNECT6
 #include "connect6.h"
 typedef minizero::env::connect6::Connect6Action Action;
@@ -52,16 +57,11 @@ typedef minizero::env::puzzle2048::Puzzle2048EnvLoader EnvironmentLoader;
 typedef minizero::env::rubiks::RubiksAction Action;
 typedef minizero::env::rubiks::RubiksEnv Environment;
 typedef minizero::env::rubiks::RubiksEnvLoader EnvironmentLoader;
-#elif TICIACTOE
+#else
 #include "tictactoe.h"
 typedef minizero::env::tictactoe::TicTacToeAction Action;
 typedef minizero::env::tictactoe::TicTacToeEnv Environment;
 typedef minizero::env::tictactoe::TicTacToeEnvLoader EnvironmentLoader;
-#else
-#include "atarigo.h"
-typedef minizero::env::atarigo::AtariGoAction Action;
-typedef minizero::env::atarigo::AtariGoEnv Environment;
-typedef minizero::env::atarigo::AtariGoEnvLoader EnvironmentLoader;
 #endif
 
 namespace minizero::env {
@@ -89,7 +89,9 @@ inline void setUpEnv()
     config::zero_actor_intermediate_sequence_length = 200;
 #endif
 
-#if CONNECT6
+#if ATARIGO
+    config::env_board_size = 7;
+#elif CONNECT6
     config::env_board_size = 19;
 #elif GO
     config::env_board_size = 9;
@@ -111,8 +113,6 @@ inline void setUpEnv()
     config::env_board_size = 4;
 #elif RUBIKS
     config::env_board_size = 3;
-#elif ATARIGO
-    config::env_board_size = 7;
 #endif
 }
 

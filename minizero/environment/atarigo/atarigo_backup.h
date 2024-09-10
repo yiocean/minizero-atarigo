@@ -22,6 +22,18 @@ public:
 
         num_passes_.get(Player::kPlayer1) = 0;
         num_passes_.get(Player::kPlayer2) = 0;
+
+        // int center_block_id = -1;
+        // if (board_size_ % 2 == 0) {
+        //     center_block_id = ((board_size_ + 1) * ((board_size_ / 2) - 1));
+        // } else {
+        //     center_block_id = (((board_size_ * board_size_) - 1) / 2);
+        // }
+
+        // act(AtariGoAction(center_block_id, Player::kPlayer1));
+        // act(AtariGoAction(center_block_id + 1, Player::kPlayer2));
+        // act(AtariGoAction(center_block_id + board_size_ + 1, Player::kPlayer1));
+        // act(AtariGoAction(center_block_id + board_size_, Player::kPlayer2));
     }
 
     bool act(const AtariGoAction& action) override
@@ -41,29 +53,14 @@ public:
         return go::GoEnv::isTerminal();
     }
 
-    bool isLegalAction(const AtariGoAction& action) const override
-    {
-        int center_block_id = -1;
-        if (board_size_ % 2 == 0) {
-            center_block_id = ((board_size_ + 1) * ((board_size_ / 2) - 1));
-        } else {
-            center_block_id = (((board_size_ * board_size_) - 1) / 2);
-        }
-
-        if (actions_.size() == 0) { return (action.getActionID() == center_block_id) ? true : false; }
-        if (actions_.size() == 1) { return (action.getActionID() == center_block_id + 1) ? true : false; }
-        if (actions_.size() == 2) { return (action.getActionID() == center_block_id + board_size_ + 1) ? true : false; }
-        if (actions_.size() == 3) { return (action.getActionID() == center_block_id + board_size_) ? true : false; }
-
-        return go::GoEnv::isLegalAction(action);
-    }
-
     float getEvalScore(bool is_resign = false) const override
     {
-        if (!isEatStone()) { return 0.0f; }
+        if (!isEatStone() && !is_resign) { return 0.0f; }
 
-        if (turn_ == Player::kPlayer1) { return -1.0f; } // white win
-        if (turn_ == Player::kPlayer2) { return 1.0f; }  // black win
+        if (turn_ == Player::kPlayer1)
+            return -1.0f; // white win
+        else if (turn_ == Player::kPlayer2)
+            return 1.0f; // black win
 
         return 0.0f;
     }
@@ -74,8 +71,24 @@ public:
 private:
     GamePair<int> num_passes_;
 
+    // std::pair<int, int> getNumPasses() const
+    // {
+    //     int num_black_pass = 0;
+    //     int num_white_pass = 0;
+    //     for (const auto& action : actions_) {
+    //         if (!isPassAction(action)) { continue; }
+    //         if (action.getPlayer() == Player::kPlayer1) {
+    //             num_black_pass++;
+    //         } else if (action.getPlayer() == Player::kPlayer2) {
+    //             num_white_pass++;
+    //         }
+    //     }
+    //     return {num_black_pass, num_white_pass};
+    // }
+
     bool isEatStone() const
     {
+        // auto [num_black_pass, num_white_pass] = getNumPasses();
         std::size_t black_count = getStoneBitboard().get(Player::kPlayer1).count() + num_passes_.get(Player::kPlayer1);
         std::size_t white_count = getStoneBitboard().get(Player::kPlayer2).count() + num_passes_.get(Player::kPlayer2);
         if (turn_ == Player::kPlayer1 && black_count != white_count) { return true; }
